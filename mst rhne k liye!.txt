@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mst Rhne K Liye Class Join Kre!</title>
+<style>
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+overflow: hidden;
+user-select: none;
+-webkit-user-select: none;
+}
+.card {
+background: rgba(255, 255, 255, 0.9);
+padding: 40px 30px;
+border-radius: 24px;
+box-shadow: 0 15px 35px rgba(251, 111, 146, 0.2);
+text-align: center;
+max-width: 90%;
+width: 420px;
+transition: all 0.3s ease;
+z-index: 10;
+border: 2px solid #ff85a1;
+}
+h1 {
+color: #fb6f92;
+font-size: 28px;
+margin-bottom: 30px;
+text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+line-height: 1.4;
+}
+.btn-container {
+display: flex;
+justify-content: space-around;
+align-items: center;
+gap: 20px;
+margin-top: 20px;
+}
+.btn {
+padding: 14px 40px;
+font-size: 20px;
+font-weight: bold;
+border: none;
+border-radius: 50px;
+cursor: pointer;
+transition: transform 0.2s, box-shadow 0.2s;
+outline: none;
+}
+.btn-yes {
+background: linear-gradient(45deg, #ff477e, #ff85a1);
+color: white;
+box-shadow: 0 5px 15px rgba(255, 71, 126, 0.4);
+}
+.btn-yes:hover {
+transform: scale(1.1);
+box-shadow: 0 8px 20px rgba(255, 71, 126, 0.6);
+}
+.btn-no {
+background: linear-gradient(45deg, #9a9899, #c1bfc0);
+color: white;
+box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+@keyframes shake {
+0%, 100% { transform: translateX(0); }
+20%, 60% { transform: translateX(-10px); }
+40%, 80% { transform: translateX(10px); }
+}
+.shake {
+animation: shake 0.4s ease-in-out;
+}
+.kiss-emoji {
+position: absolute;
+font-size: 40px;
+pointer-events: none;
+z-index: 999;
+animation: floatUp 2.5s linear forwards;
+}
+@keyframes floatUp {
+0% {
+transform: translateY(100vh) scale(0.5) rotate(0deg);
+opacity: 0;
+}
+15% { opacity: 1; }
+90% { opacity: 1; }
+100% {
+transform: translateY(-15vh) scale(1.5) rotate(360deg);
+opacity: 0;
+}
+}
+.overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+z-index: 100;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.5s ease;
+}
+.overlay.active {
+opacity: 1;
+pointer-events: auto;
+}
+.overlay-yes {
+background: rgba(255, 229, 236, 0.95);
+}
+.overlay-no {
+background: rgba(0, 0, 0, 0.85);
+color: white;
+}
+.overlay-title {
+font-size: 36px;
+font-weight: bold;
+margin-bottom: 20px;
+text-align: center;
+padding: 0 20px;
+}
+.overlay-yes .overlay-title {
+color: #ff477e;
+font-size: 60px;
+letter-spacing: 2px;
+animation: pulse 1.5s infinite;
+}
+.overlay-no .overlay-title {
+color: #ff3333;
+}
+@keyframes pulse {
+0%, 100% { transform: scale(1); }
+50% { transform: scale(1.1); }
+}
+.retry-btn {
+margin-top: 30px;
+padding: 12px 30px;
+font-size: 18px;
+background: #fff;
+color: #333;
+border: none;
+border-radius: 25px;
+cursor: pointer;
+font-weight: bold;
+box-shadow: 0 4px 10px rgba(255,255,255,0.2);
+}
+.retry-btn:hover {
+background: #ff3333;
+color: white;
+}
+.big-kiss {
+font-size: 100px;
+margin-bottom: 20px;
+animation: heartbeat 1s infinite alternate;
+}
+@keyframes heartbeat {
+to { transform: scale(1.2); }
+}
+</style>
+</head>
+<body>
+
+<div class="card" id="mainCard">
+<h1>Mst rhne k liye class join kre? 🤔</h1>
+<div class="btn-container">
+<button class="btn btn-yes" onclick="selectYes()">YES</button>
+<button class="btn btn-no" id="noBtn" onclick="selectNo()">NO</button>
+</div>
+</div>
+
+<!-- YES Screen -->
+<div class="overlay overlay-yes" id="yesOverlay">
+<div class="big-kiss">💋</div>
+<div class="overlay-title">JOIN</div>
+</div>
+
+<!-- NO Screen -->
+<div class="overlay overlay-no" id="noOverlay">
+<div style="font-size: 80px; margin-bottom: 20px;">❌🤦‍♂️</div>
+<div class="overlay-title">Aap glt option chune ho! 😡</div>
+<button class="retry-btn" onclick="resetPage()">Sahi Option Chune ↩️</button>
+</div>
+
+<script>
+const kissEmojis = ['💋', '😘', '❤️', '💖', '🥰', '🌹', '✨'];
+let showerInterval;
+
+function selectYes() {
+document.getElementById('yesOverlay').classList.add('active');
+createKissShower();
+showerInterval = setInterval(createKissShower, 150);
+}
+
+function createKissShower() {
+for(let i = 0; i < 6; i++) {
+const kiss = document.createElement('div');
+kiss.classList.add('kiss-emoji');
+kiss.innerText = kissEmojis[Math.floor(Math.random() * kissEmojis.length)];
+kiss.style.left = Math.random() * 100 + 'vw';
+const duration = 1.5 + Math.random() * 2;
+kiss.style.animationDuration = duration + 's';
+kiss.style.fontSize = (20 + Math.random() * 40) + 'px';
+document.body.appendChild(kiss);
+setTimeout(() => { kiss.remove(); }, duration * 1000);
+}
+}
+
+function selectNo() {
+const card = document.getElementById('mainCard');
+card.classList.add('shake');
+setTimeout(() => {
+card.classList.remove('shake');
+document.getElementById('noOverlay').classList.add('active');
+}, 400);
+}
+
+function resetPage() {
+document.getElementById('noOverlay').classList.remove('active');
+}
+</script>
+</body>
+</html>
